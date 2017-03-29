@@ -20,4 +20,4 @@ Joel Tinx @joeltinx
 - rsrc -manifest main.manifest -o rsrc.syso
 
 - go build
-- go build -ldflags="-H windowsgui"
+- go build -ldflags="-H windowsgui" (En caso de querer hacer un debug, no ejecutar esta linea)
