@@ -1,8 +1,11 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	//"log"
 	"os/exec"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/lxn/walk"
@@ -13,26 +16,26 @@ func main() {
 	var inTE, outTE *walk.TextEdit
 	//out, _ := exec.Command("wmic","logicaldisk", "get", "name").Output()
 
-	out, err := exec.Command("wmic", "desktopmonitor", "get", "screenheight", ",", "screenwidth").Output()
+	regex, err := regexp.Compile("\n")
+	if err != nil {
+		return
+	}
+
+	width, err := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
 	if err != nil {
 		panic(err)
 	}
 
-	height, err := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
+	height, err := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
 	if err != nil {
 		panic(err)
 	}
 
-	width, err := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
-	if err != nil {
-		panic(err)
-	}
+	h, _ := strconv.Atoi(strings.Replace(strings.Replace(regex.ReplaceAllString(string(height), ""), "ScreenHeight", "", 1), " ", "", -1))
+	w, _ := strconv.Atoi(strings.Replace(strings.Replace(regex.ReplaceAllString(string(width), ""), "ScreenWidth", "", 1), " ", "", -1))
 
-	// log.Println(strings.Replace(string(out), "ScreenHeight  ScreenWidth \n", "", 1))
-
-	log.Println(strings.Split(string(height), ` `)[2])
-	log.Println(strings.Split(string(width), ` `)[2])
-	//screenwidth
+	fmt.Println(strings.Replace(strings.Replace(regex.ReplaceAllString(string(height), ""), "ScreenHeight", "", 1), " ", "", -1))
+	fmt.Println(strings.Replace(strings.Replace(regex.ReplaceAllString(string(width), ""), "ScreenWidth", "", 1), " ", "", -1))
 
 	MainWindow{
 		Title:   "SCREAMO",
@@ -41,7 +44,7 @@ func main() {
 		Children: []Widget{
 			HSplitter{
 				Children: []Widget{
-					TextEdit{AssignTo: &inTE, Text: string(out)},
+					TextEdit{AssignTo: &inTE, Text: strconv.Itoa(h) + ":" + strconv.Itoa(w)},
 					TextEdit{AssignTo: &outTE, ReadOnly: true},
 				},
 			},
