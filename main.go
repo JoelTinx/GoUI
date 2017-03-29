@@ -1,59 +1,52 @@
 package main
 
 import (
-	"fmt"
-	//"log"
 	"os/exec"
-	"regexp"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/lxn/walk"
 	. "github.com/lxn/walk/declarative"
 )
 
 func main() {
-	var inTE, outTE *walk.TextEdit
-	//out, _ := exec.Command("wmic","logicaldisk", "get", "name").Output()
+	//var inTE, outTE *walk.TextEdit
+	var wv *walk.WebView
 
-	regex, err := regexp.Compile("\n")
-	if err != nil {
-		return
-	}
+	width, _ := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
+	height, _ := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
 
-	width, err := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
-	if err != nil {
-		panic(err)
-	}
-
-	height, err := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
-	if err != nil {
-		panic(err)
-	}
-
-	h, _ := strconv.Atoi(strings.Replace(strings.Replace(regex.ReplaceAllString(string(height), ""), "ScreenHeight", "", 1), " ", "", -1))
-	w, _ := strconv.Atoi(strings.Replace(strings.Replace(regex.ReplaceAllString(string(width), ""), "ScreenWidth", "", 1), " ", "", -1))
-
-	fmt.Println(strings.Replace(strings.Replace(regex.ReplaceAllString(string(height), ""), "ScreenHeight", "", 1), " ", "", -1))
-	fmt.Println(strings.Replace(strings.Replace(regex.ReplaceAllString(string(width), ""), "ScreenWidth", "", 1), " ", "", -1))
+	h, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(height))), "ScreenHeight", "", 1))
+	w, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(width))), "ScreenWidth", "", 1))
 
 	MainWindow{
-		Title:   "SCREAMO",
-		MinSize: Size{600, 400},
+		Title:   "MangaRead",
+		MinSize: Size{Width: w - 10, Height: h - 50},
 		Layout:  VBox{},
 		Children: []Widget{
-			HSplitter{
-				Children: []Widget{
-					TextEdit{AssignTo: &inTE, Text: strconv.Itoa(h) + ":" + strconv.Itoa(w)},
-					TextEdit{AssignTo: &outTE, ReadOnly: true},
-				},
-			},
-			PushButton{
-				Text: "SCREAM",
-				OnClicked: func() {
-					outTE.SetText(strings.ToUpper(inTE.Text()))
-				},
+			WebView{
+				AssignTo: &wv,
+				Name:     "wv",
+				URL:      "http://127.0.0.1:8080", // Ojo esta seccion todavía pertenece a otro proyecto
 			},
 		},
 	}.Run()
+}
+
+// @write by: Kim Ilyong (http://intogooglego.blogspot.pe)
+func stringMinifier(in string) (out string) {
+	white := false
+	for _, c := range in {
+		if unicode.IsSpace(c) {
+			if !white {
+				out = out + ""
+			}
+			white = true
+		} else {
+			out = out + string(c)
+			white = false
+		}
+	}
+	return
 }
