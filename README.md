@@ -1,12 +1,11 @@
 # Go UI test
 
-Creacion de interfaces gráficas con Go
+Creating graphical interfaces with Go
 
-### Author:
+### Requirements
+- Go 1.8 or higher
 
-Joel Tinx @joeltinx
-
-### Instalación
+### Instalation
 - mkdir GoUI && cd GoUI
 - set GOPATH=./GoUI
 - set PATH=%PATH%;C:\Users\JOEL\Desktop\Go\GoUI\bin
@@ -20,4 +19,9 @@ Joel Tinx @joeltinx
 - rsrc -manifest main.manifest -o rsrc.syso
 
 - go build
-- go build -ldflags="-H windowsgui" (En caso de querer hacer un debug, no ejecutar esta linea)
+- go build -ldflags="-H windowsgui" (In case you want to track by terminal, do not run this line.)
+
+
+### Author:
+
+Joel Tinx @joeltinx
