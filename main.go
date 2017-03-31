@@ -2,6 +2,7 @@ package main
 
 import (
 	"archive/zip"
+	"html/template"
 	"io"
 	"net/http"
 	"os"
@@ -33,8 +34,15 @@ const templ = `
 `
 
 func main() {
-	// ---
-	fs := http.FileServer(http.Dir(destino))
+	// Get variable "temp" windows: storage temporal files
+	pathtemp := os.Getenv("temp") + "\\manaread"
+
+	// Array storage files name (images uncompressed)
+	Images := make([]string, 0)
+
+	t := template.New("template")
+
+	fs := http.FileServer(http.Dir(pathtemp))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, Images)
