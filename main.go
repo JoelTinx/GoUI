@@ -33,21 +33,64 @@ const templ = `
 </html>
 `
 
-func main() {
+var destino, origen string
+
+func init() {
 	// Get variable "temp" windows: storage temporal files
-	pathtemp := os.Getenv("temp") + "\\manaread"
+	destino = os.Getenv("temp") + "\\manaread"
+}
+
+func main() {
+	// Verify parameter with filename
+	if len(os.Args) >= 2 {
+		origen = os.Args[1]
+	} else {
+		//log.Println("Ha ocurrido un error interno")
+		os.Exit(1)
+	}
+
+	// Check and delete files on destination path
+	if val, _ := exists(destino); val {
+		if err := os.RemoveAll(destino); err != nil {
+			//log.Println("Ha ocurrido un error interno")
+			os.Exit(1)
+		}
+	}
+
+	// Create directory to save the uncompressed images
+	os.MkdirAll(destino, 0777)
+	err := Unzip(origen, destino)
+	if err != nil {
+		//log.Println("No se ha podido descomprimir")
+		os.Exit(1)
+	}
+	defer os.RemoveAll(destino)
 
 	// Array storage files name (images uncompressed)
 	Images := make([]string, 0)
 
-	t := template.New("template")
+	//
+	filepath.Walk(destino, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() && IsImage(path) {
+			strx, _ := filepath.Rel(destino, path)
+			strx = filepath.ToSlash(strx)
+			Images = append(Images, strx)
+		}
+		return err
+	})
 
-	fs := http.FileServer(http.Dir(pathtemp))
+	t, err := template.New("Mangarad template").Parse(templ)
+	if err != nil {
+		//log.Println("Error al Renderizar Manga")
+		os.Exit(1)
+	}
+
+	fs := http.FileServer(http.Dir(destino))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, Images)
 	})
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":3000", nil)
 
 	// --
 
