@@ -1,3 +1,4 @@
+// Write by: Joel Tinx
 package main
 
 import (
