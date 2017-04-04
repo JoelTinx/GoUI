@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -37,7 +38,7 @@ var destino, origen string
 
 func init() {
 	// Get variable "temp" windows: storage temporal files
-	destino = os.Getenv("temp") + "\\manaread"
+	destino = os.Getenv("temp") + "\\mangaread"
 }
 
 func main() {
@@ -45,14 +46,14 @@ func main() {
 	if len(os.Args) >= 2 {
 		origen = os.Args[1]
 	} else {
-		//log.Println("Ha ocurrido un error interno")
+		log.Println("Ha ocurrido un error interno")
 		os.Exit(1)
 	}
 
 	// Check and delete files on destination path
 	if val, _ := exists(destino); val {
 		if err := os.RemoveAll(destino); err != nil {
-			//log.Println("Ha ocurrido un error interno")
+			log.Println("Ha ocurrido un error interno")
 			os.Exit(1)
 		}
 	}
@@ -61,7 +62,7 @@ func main() {
 	os.MkdirAll(destino, 0777)
 	err := Unzip(origen, destino)
 	if err != nil {
-		//log.Println("No se ha podido descomprimir")
+		log.Println("No se ha podido descomprimir")
 		os.Exit(1)
 	}
 	defer os.RemoveAll(destino)
@@ -81,7 +82,7 @@ func main() {
 
 	t, err := template.New("Mangarad template").Parse(templ)
 	if err != nil {
-		//log.Println("Error al Renderizar Manga")
+		log.Println("Error al Renderizar Manga")
 		os.Exit(1)
 	}
 
@@ -90,8 +91,9 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, Images)
 	})
-	http.ListenAndServe(":3000", nil)
 
+	// Ejecutar este proceso en paralelo
+	http.ListenAndServe(":3000", nil)
 	// --
 
 	//var inTE, outTE *walk.TextEdit
