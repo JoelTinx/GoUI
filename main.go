@@ -97,9 +97,14 @@ func main() {
 	// --
 
 	//var inTE, outTE *walk.TextEdit
+	var fmr *walk.MainWindow
 	var wv *walk.WebView
+	var msg walk.MsgBox
 
-	width, _ := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
+	width, err := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
+	if err != nil {
+		msg()
+	}
 	height, _ := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
 
 	h, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(height))), "ScreenHeight", "", 1))
