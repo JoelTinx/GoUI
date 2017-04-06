@@ -87,34 +87,26 @@ func main() {
 		os.Exit(1)
 	}
 
-	fs := http.FileServer(http.Dir(destino))
-	http.Handle("/public/", http.StripPrefix("/public/", fs))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		t.Execute(w, Images)
-	})
-
-	// Ejecutar este proceso en paralelo
-	http.ListenAndServe(":3000", nil)
-	// --
+	go RunServer(destino, t, Images)
 
 	//var inTE, outTE *walk.TextEdit
-	var fmr *walk.MainWindow
+	var frm *walk.MainWindow
 	var wv *walk.WebView
-	var msg walk.MsgBox
 
 	width, err := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
-	if err != nil {
-		msg()
-	}
+	// if err != nil {
+	// 	walk.MsgBox(nil, "Error", "Ola que ase")
+	// }
 	height, _ := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
 
 	h, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(height))), "ScreenHeight", "", 1))
 	w, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(width))), "ScreenWidth", "", 1))
 
 	MainWindow{
-		Title:   "MangaRead",
-		MinSize: Size{Width: w - 10, Height: h - 50},
-		Layout:  VBox{},
+		Title:    "MangaRead",
+		MinSize:  Size{Width: w - 10, Height: h - 50},
+		Layout:   VBox{},
+		AssignTo: &frm,
 		Children: []Widget{
 			WebView{
 				AssignTo: &wv,
@@ -123,6 +115,18 @@ func main() {
 			},
 		},
 	}.Run()
+}
+
+// Async function Go Golang
+func RunServer(destino string, tmpl *template.Template, Images []string) {
+	fs := http.FileServer(http.Dir(destino))
+	http.Handle("/public/", http.StripPrefix("/public/", fs))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl.Execute(w, Images)
+	})
+
+	// Ejecutar este proceso en paralelo
+	http.ListenAndServe(":3000", nil)
 }
 
 // @write by: Kim Ilyong (http://intogooglego.blogspot.pe)
