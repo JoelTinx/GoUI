@@ -94,9 +94,9 @@ func main() {
 	var wv *walk.WebView
 
 	width, err := exec.Command("wmic", "desktopmonitor", "get", "screenwidth").Output()
-	// if err != nil {
-	// 	walk.MsgBox(nil, "Error", "Ola que ase")
-	// }
+	if err != nil {
+		walk.MsgBox(nil, "Error", "Ola que ase")
+	}
 	height, _ := exec.Command("wmic", "desktopmonitor", "get", "screenheight").Output()
 
 	h, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(height))), "ScreenHeight", "", 1))
@@ -146,6 +146,7 @@ func stringMinifier(in string) (out string) {
 	return
 }
 
+// Verifica que un archivo sea imagen
 func IsImage(path string) bool {
 	output := false
 	switch strings.ToUpper(filepath.Ext(path)) {
