@@ -5,7 +5,7 @@ Creating graphical interfaces with Go
 ### Requirements
 - Go 1.8 or higher
 
-### Instalation
+### Compilation steps
 - mkdir GoUI && cd GoUI
 - set GOPATH=./GoUI
 - set PATH=%PATH%;C:\Users\JOEL\Desktop\Go\GoUI\bin
@@ -21,6 +21,10 @@ Creating graphical interfaces with Go
 - go build
 - go build -ldflags="-H windowsgui" (In case you want to track by terminal, do not run this line.)
 
+
+### Instalation
+- "bin" diretory add a PATH of windows system
+- Add registry key value in your system -> HKEY_CLASSES_ROOT/*/shell/MangaRead/Command -> "C:\GoBin\bin\mangaread.exe" "%1"
 
 ### Author:
 
