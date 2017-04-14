@@ -21,3 +21,7 @@ rsrc -manifest main.manifest -o rsrc.syso
 go build
 
 go build -ldflags="-H windowsgui"
+
+
+set PATH=%PATH%;C:\Users\JOEL\Desktop\Go\GoUI\src\github.com\JoelTinx\GoUI\  ##(ideal agregar a variables de sistema)
+agregar a registro

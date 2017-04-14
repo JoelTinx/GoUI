@@ -1,17 +1,3 @@
 Windows Registry Editor Version 5.00
-[HKEY_CURRENT_USER\Prueba]
-@="" 
-@echo off
-REG ADD "HKCU\Prueba" /ve /f 
-
-Windows Registry Editor Version 5.00
-[HKEY_CURRENT_USER\Prueba]
-@="Dato" 
-@echo off
-REG ADD "HKCU\Prueba" /ve /t REG_SZ /d "Dato" /f 
-
-Windows Registry Editor Version 5.00
-[HKEY_CURRENT_USER\Prueba]
-"test"=dword:1
-@echo off
-REG ADD "HKCU\Prueba" /v test /t REG_DWORD /d 1 /f 
+[HKEY_CLASSES_ROOT/*/shell/MangaRead/Command]
+@="C:\GoBin\bin\mangaread.exe" "%1"
