@@ -87,7 +87,6 @@ func main() {
 
 	go RunServer(destino, t, Images)
 
-	//var inTE, outTE *walk.TextEdit
 	var frm *walk.MainWindow
 	var wv *walk.WebView
 
@@ -101,7 +100,7 @@ func main() {
 	w, _ := strconv.Atoi(strings.Replace(strings.TrimSpace(stringMinifier(string(width))), "ScreenWidth", "", 1))
 
 	MainWindow{
-		Title:    "MangaRead",
+		Title:    "MangaRead - " + origen,
 		MinSize:  Size{Width: w - 10, Height: h - 50},
 		Layout:   VBox{},
 		AssignTo: &frm,
