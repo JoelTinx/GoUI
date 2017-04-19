@@ -1,6 +1,7 @@
 # Go UI test
 
-Creating graphical interfaces with Go
+Creating graphical interfaces with Go for windows SO.
+Example "walk" package 
 
 ### Requirements
 - Go 1.8 or higher
