@@ -25,7 +25,7 @@ Example "walk" package
 
 ### Instalation
 - "bin" diretory add a PATH of windows system
-- Add registry key value in your system -> HKEY_CLASSES_ROOT/*/shell/MangaRead/Command -> "C:\GoBin\bin\mangaread.exe" "%1"
+- execute file "register.reg" for add register to system
 
 ### Author:
 
