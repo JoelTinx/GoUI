@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+; (c) Joel Tinx - 2017
+
+[HKEY_CLASSES_ROOT\*\shell\MangaRead]
+
+[HKEY_CLASSES_ROOT\*\shell\MangaRead\command]
+@="\"C:\\GoBin\\bin\\mangaread.exe\" \"%1\""
