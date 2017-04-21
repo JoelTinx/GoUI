@@ -1,4 +1,4 @@
-Here notes:
--
--
--
+Aquí algunas notas:
+- Ocultar el terminar con el servidor web, ejecutar en segundo plano
+- Crear instalador.
+- Crear templates html5 y css3 para mejorar la presentación.
